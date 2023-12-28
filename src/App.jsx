@@ -65,6 +65,8 @@ function App() {
         });
   
         console.log(response.data);
+        // reload after create 
+        location.reload();
       } catch (error) {
         console.log(error);
       }

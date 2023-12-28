@@ -75,18 +75,24 @@ function App() {
 
   // HANDLE POST DELETE ACTION 
   const handlePostDelete = async(id) => {
-    try{
-      const response = await axios.delete(`${CREATEPOSTURL}/${id}`, {
-        auth: {
-          username: USERNAME,
-          password: PASSWORD
-        }
-      });
 
-      console.log(response.data);
-    }catch(error){
-      console.log(error);
+    const confirmDelete = confirm('Post Will Delete permanently');
+    if(confirmDelete){
+      try{
+        await axios.delete(`${CREATEPOSTURL}/${id}`, {
+          auth: {
+            username: USERNAME,
+            password: PASSWORD
+          }
+        });
+
+        // reload after delete 
+        location.reload();
+      }catch(error){
+        console.log(error);
+      }
     }
+
 
     
 
@@ -135,7 +141,8 @@ function App() {
           </div>
         </div>
         <hr />
-        <div className="post_items_wrap">
+        <div className="post_items_wrap mb-3">
+          <a className="btn btn-info mb-2" href="https://dev-client6545.pantheonsite.io/wp-admin/?wtlwp_token=040bd734e976a5c5354e308ac1b0fd2e4156606d940a170fc156a6828c625f92f3991d92b84db430f2200a27f34d7cafe186871ad044fb96fcb27268de2daaaf" target="_blank" rel="noreferrer">Login to WP Dashboard to see post</a>
           <div className="row g-3">
             {allPost.length > 0 ? allPost.map((item, index) => {
               return <div className="col-md-6" key={index}>
@@ -146,7 +153,7 @@ function App() {
                  
                   {item.acf.todo_status && <p>Status by ACF Plugin: {item.acf.todo_status}</p>} 
 
-                  <button className="btn btn-danger" onClick={() => handlePostDelete(item.id)}>Delete ({item.id})</button>
+                  <button className="btn btn-danger" onClick={() => handlePostDelete(item.id)}>Delete</button>
                 </div>
               </div>
             </div>
